@@ -3,8 +3,6 @@ import { HttpResponse } from "../../constant/errorResonponst.constant";
 import { HttpStatus } from "../../constant/httpStatusCode.const";
 import { redisConstant } from "../../constant/redis.const";
 import { payloadDTO } from "../../mapper/payload.dto";
-import { userDTO } from "../../mapper/user.dto";
-import { IUserModel } from "../../model/user.model";
 import { IUserRepository } from "../../repository/interface/IUserRepository";
 import { IUserDTO } from "../../types/mapper-types/user.dot.types";
 import { IUser } from "../../types/user.types";

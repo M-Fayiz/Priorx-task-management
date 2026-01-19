@@ -28,4 +28,7 @@ export abstract class BaseRepository<T extends Document>{
   async findOne(filter:QueryFilter<T>):Promise<T|null>{
     return this.model.findOne(filter)
   }
+  async delete(id: string) {
+    return this.model.findByIdAndDelete(id);
+  }
 }
