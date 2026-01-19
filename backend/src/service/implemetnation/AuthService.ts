@@ -3,7 +3,6 @@ import { HttpResponse } from "../../constant/errorResonponst.constant";
 import { HttpStatus } from "../../constant/httpStatusCode.const";
 import { redisConstant } from "../../constant/redis.const";
 import { payloadDTO } from "../../mapper/payload.dto";
-import { IUserModel } from "../../model/user.model";
 import { IUserRepository } from "../../repository/interface/IUserRepository";
 import { IUser } from "../../types/user.types";
 import { createHttpError } from "../../util/appErrors";

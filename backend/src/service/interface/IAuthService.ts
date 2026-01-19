@@ -1,4 +1,4 @@
-import { IUserModel } from "../../model/user.model";
+
 
 export interface IAuthService{
     createUser(name:string,email:string,password:string):Promise<string>
