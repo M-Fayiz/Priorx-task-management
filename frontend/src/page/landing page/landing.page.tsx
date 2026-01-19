@@ -1,11 +1,12 @@
-import { ListTodo } from "lucide-react";
+import { useAuthStore } from "@/store/auth.store";
+import {  ListTodo } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function PriorixLanding() {
   const [scrollY, setScrollY] = useState(0);
   const [activeFeature, setActiveFeature] = useState(0);
-
+  const {user}=useAuthStore()
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll);
@@ -62,9 +63,20 @@ export default function PriorixLanding() {
           </div>
 
           <div className="flex gap-3">
+            {user?(
+                <Link to={'/dashboard/tasks'}>
+                  <div>
+                  
+                  <span>Dashboard</span>
+                  </div>
+                </Link>
+            ):(
+
             <Link to={'/auth/login'} className="px-4 py-2 text-sm hover:text-black transition">
               Sign in
             </Link>
+
+            )}
             <button className="px-4 py-2 text-sm font-button rounded-xl bg-kosma-black text-kosma-white hover:scale-105 hover:shadow-lg transition">
               Get started
             </button>

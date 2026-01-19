@@ -5,4 +5,5 @@ export interface ITaskController {
   updateTask(req: Request, res: Response, next: NextFunction): Promise<void>;
   deleteTask(req: Request, res: Response, next: NextFunction): Promise<void>;
   getTasks(req: Request, res: Response, next: NextFunction): Promise<void>;
+  getdashboardData(req: Request, res: Response, next: NextFunction): Promise<void>;
 }

@@ -6,6 +6,7 @@ import NotFoundPage from "../page/not found/not-found.page";
 import VerifyEmail from "@/page/auth pages/verify.page";
 import { TaskPage } from "@/page/task/task.page";
 import { Protected_Router } from "@/components/protectedRouter";
+import { AnalyticsPage } from "@/page/task/analytical.page";
 
 
 
@@ -34,7 +35,8 @@ const Router = createBrowserRouter([
     element:<Protected_Router/>,
     children: [
       { index: true, element: <TaskPage /> }, 
-      { path: "task", element: <TaskPage /> }, 
+      { path: "tasks", element: <TaskPage /> }, 
+      { path: "analytics", element: <AnalyticsPage /> }, 
     ],
   },
 ]);

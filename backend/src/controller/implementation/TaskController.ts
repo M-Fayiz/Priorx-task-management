@@ -40,4 +40,11 @@ export class TaskController implements ITaskController {
 
     successResponse(res,{tasks})
   }
+  getdashboardData=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
+      
+    const {userId}=req.params
+
+    const dashData = await this._taskService.getDashboardAnalytics(userId as string)
+        successResponse(res,{dashData})
+  }
 }

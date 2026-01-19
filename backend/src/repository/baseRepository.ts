@@ -1,4 +1,4 @@
-import { Document, Model, Types, QueryFilter, UpdateQuery } from "mongoose";
+import { Document, Model, Types, QueryFilter, UpdateQuery, PipelineStage } from "mongoose";
 
 export abstract class BaseRepository<T extends Document> {
   constructor(private model: Model<T>) {}
@@ -37,5 +37,8 @@ export abstract class BaseRepository<T extends Document> {
     }
   );
 }
+async aggregate<R = T>(pipeline: PipelineStage[]): Promise<R[]> {
+    return this.model.aggregate(pipeline).exec();
+  }
 
 }

@@ -67,6 +67,9 @@ export default function LoginPage() {
       setLoading(false)
     }
   }
+  if(loading){
+    return<Spinner/>
+  }
   return (
     <div className="min-h-screen flex  from-gray-50 to-gray-100">
       
@@ -201,7 +204,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
-      {loading&&<Spinner/>}
+      
     </div>
   )
 }

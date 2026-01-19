@@ -1,9 +1,9 @@
-import { ClipboardList, BarChart3, Settings, X } from "lucide-react";
+import { ClipboardList, BarChart3,  X } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const navItems = [
-  { label: "Tasks", icon: ClipboardList },
-  { label: "Analytics", icon: BarChart3 },
-  { label: "Settings", icon: Settings },
+  { label: "Tasks", icon: ClipboardList,to:'/dashboard/tasks' },
+  { label: "Analytics", icon: BarChart3 ,to:'/dashboard/analytics'},
 ];
 
 interface SidebarProps {
@@ -50,8 +50,8 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
         {/* Navigation */}
         <nav className="space-y-4">
-          {navItems.map(({ label, icon: Icon }) => (
-            <div
+          {navItems.map(({ label, icon: Icon,to }) => (
+            <Link to={to}
               key={label}
               className="flex items-center gap-3 px-3 py-2 rounded-lg
                          text-kosma-lgray hover:bg-kosma-dgray
@@ -59,7 +59,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
             >
               <Icon size={18} />
               <span className="text-sm font-medium">{label}</span>
-            </div>
+            </Link>
           ))}
         </nav>
       </aside>

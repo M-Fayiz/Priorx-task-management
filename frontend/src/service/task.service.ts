@@ -1,7 +1,7 @@
 
 import { axiosInstance } from "@/axios/axiosInstance";
 import ConstAPI from "@/constant/api.const";
-import type { Task } from "@/types/task.types"; 
+import type { DashboardAnalyticsDto, Task } from "@/types/task.types"; 
 import { throwAxiosError } from "@/utils/axiosError.util";
 
 export const TaskService = {
@@ -34,6 +34,15 @@ export const TaskService = {
   deleteTask:async(taskId:string,userId:string)=>{
     try {
         await axiosInstance.delete(ConstAPI.TASK.DELETE(taskId,userId))
+    } catch (error) {
+        throwAxiosError(error)
+    }
+  },
+  getDashData:async(userId:string):Promise<DashboardAnalyticsDto>=>{
+    try {
+        const response = await axiosInstance.get(ConstAPI.TASK.DASH_DATA(userId))
+        console.log(response.data)
+        return response.data.dashData
     } catch (error) {
         throwAxiosError(error)
     }

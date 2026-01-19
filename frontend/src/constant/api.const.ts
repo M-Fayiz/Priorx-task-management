@@ -11,7 +11,8 @@ const ConstAPI={
         CREATE:'/tasks/create',
         FETCH:(userId:string)=>`/tasks/user/${userId}`,
         DELETE:(taskId:string,userId:string)=>`/tasks/${taskId}/user/${userId}`,
-        UPDATE_TASK:(taskId:string)=>`/tasks/${taskId}`
+        UPDATE_TASK:(taskId:string)=>`/tasks/${taskId}`,
+        DASH_DATA:(userId:string)=>`/tasks/dashboard/${userId}`,
     }
 }
 

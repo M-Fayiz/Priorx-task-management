@@ -8,6 +8,9 @@ import { TASK_EVENTS } from "../../constant/taskEvents.constants";
 import { createHttpError } from "../../util/appErrors";
 import { HttpStatus } from "../../constant/httpStatusCode.const";
 import { HttpResponse } from "../../constant/errorResonponst.constant";
+import { TaskAnalyticsResult } from "../../types/analytical.types";
+import { mapDashboardAnalyticsToDto } from "../../mapper/dashboard.dto";
+import { DashboardAnalyticsDto } from "../../types/mapper-types/dashboard.dto.types";
 
 export class TaskService implements ITaskService {
   constructor(
@@ -80,5 +83,14 @@ export class TaskService implements ITaskService {
 
     return tasks
   }
+  async getDashboardAnalytics(userId:string):Promise<DashboardAnalyticsDto> {
+  const result =
+    await this._taskRepository.getDashboardAnalytics({
+      userId: new Types.ObjectId(userId),
+    });
+
+  return mapDashboardAnalyticsToDto(result[0]);
+}
+
 
 }
