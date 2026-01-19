@@ -2,11 +2,16 @@ import { ChevronsRightLeft, ListChecks, ListTodo, TrendingUp } from 'lucide-reac
 import  { useState } from 'react';
 import type { IRegistration } from '../../types/auth.type';
 import { signupSchema } from '../../schema/authSchema';
+import AuthService from '@/service/auth.service'; 
+import SimpleVerificationModal from '@/components/successModal';
+
 
 export default function SignUpPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email,setEmail]=useState('')
+  const [showModal,setShowModal]=useState(false)
   const [formError,setFormErrors]=useState<Record<string,string>>({})
     const [registrationForm,setRegistrationForm]=useState<IRegistration>({
         name:'',
@@ -20,7 +25,7 @@ export default function SignUpPage() {
         setRegistrationForm(prv=>({...prv,[name]:value}))
     }
 
-    const onSubmit=(e:React.FormEvent<HTMLFormElement>)=>{
+    const onSubmit=async(e:React.FormEvent<HTMLFormElement>)=>{
         e.preventDefault()
 
         
@@ -37,7 +42,19 @@ export default function SignUpPage() {
             setFormErrors(ERROR);
             return;
         }
-
+        
+        try {
+         
+          const data = await AuthService.register(registrationForm.name,registrationForm.email,registrationForm.password)
+          if(data){
+            setEmail(data)
+            setShowModal(true)
+          }
+        } catch (error) {
+       
+          console.log(error)
+          
+        }
     }
 
   return (
@@ -177,8 +194,6 @@ export default function SignUpPage() {
             <button
               type="submit"
               className="w-full py-3 rounded-lg font-medium transition-all mt-6"
-             
-             
             >
               Sign Up
             </button>
@@ -235,6 +250,7 @@ export default function SignUpPage() {
           </div>
         </div>
       </div>
+     <SimpleVerificationModal open={showModal} email={email}  onClose={() => setShowModal(false)} />
     </div>
   );
 }

@@ -21,4 +21,4 @@ export const createHttpError = (statusCode: number, message: string) => {
   return errorResponse;
 };
 
-module.exports = createHttpError;
+

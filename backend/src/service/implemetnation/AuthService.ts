@@ -3,12 +3,14 @@ import { HttpResponse } from "../../constant/errorResonponst.constant";
 import { HttpStatus } from "../../constant/httpStatusCode.const";
 import { redisConstant } from "../../constant/redis.const";
 import { payloadDTO } from "../../mapper/payload.dto";
+import { userDTO } from "../../mapper/user.dto";
 import { IUserModel } from "../../model/user.model";
 import { IUserRepository } from "../../repository/interface/IUserRepository";
+import { IUserDTO } from "../../types/mapper-types/user.dot.types";
 import { IUser } from "../../types/user.types";
 import { createHttpError } from "../../util/appErrors";
-import { hashPassword } from "../../util/bcrypt.util";
-import { generateTokens } from "../../util/jwt-token-generation.util";
+import { comparePassword, hashPassword } from "../../util/bcrypt.util";
+import { generateTokens, verifyAccesToken, verifyRefreshToken } from "../../util/jwt-token-generation.util";
 import { sendToken } from "../../util/send-mail.util";
 import { IAuthService } from "../interface/IAuthService";
 import { v4 as uuidv4 } from "uuid";
@@ -77,5 +79,60 @@ export class AuthService implements IAuthService{
 
         return generateTokens(payloadDTO(createdUser._id,createdUser.email))
 
+    }
+    async authME(accessToken: string): Promise<IUserDTO> {
+        
+        const decoded=verifyAccesToken(accessToken)
+
+        if (!decoded) {
+            throw createHttpError(
+                HttpStatus.UNAUTHORIZED,
+                HttpResponse.ACCESS_TOKEN_EXPIRED,
+            );
+        }
+
+        const user = await this._userRepository.findUser({_id:decoded._id})
+
+        if(!user){
+            throw createHttpError(HttpStatus.NOT_FOUND,HttpResponse.USER_NOT_FOUND)
+        }
+
+        return userDTO(user)
+    }
+    async refreshToken(refreshToken: string): Promise<{ accessToken: string; }> {
+        
+        if(!refreshToken){
+            throw createHttpError(HttpStatus.LOCKED,HttpResponse.UNAUTHORIZED)
+        }
+        const decoded= verifyRefreshToken(refreshToken)
+
+        if(!decoded){
+            throw createHttpError(HttpStatus.LOCKED,HttpResponse.UNAUTHORIZED)
+        }
+
+        const user = await this._userRepository.findUser({_id:decoded._id})
+
+        if(!user){
+            throw createHttpError(HttpStatus.NOT_FOUND,HttpResponse.USER_NOT_FOUND)
+        }
+        const payload = payloadDTO(user._id,user.email);
+        const {accessToken}= generateTokens(payload)
+        return {accessToken}
+    }
+    async login(email: string, password: string): Promise<{ accessToken: string; refreshToken: string; }> {
+        
+        const user= await this._userRepository.findUserByEmail(email)
+
+        if(!user){
+            throw createHttpError(HttpStatus.NOT_FOUND,HttpResponse.USER_NOT_FOUND)
+        }
+
+        const isMatch= await comparePassword(password,user.password)
+
+        if(!isMatch){
+            throw createHttpError(HttpStatus.CONFLICT,HttpResponse.INVALID_CREDNTIALS)
+        }
+        const payload=payloadDTO(user._id,user.email)
+        return generateTokens(payload)
     }
 }

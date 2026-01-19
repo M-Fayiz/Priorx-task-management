@@ -1,4 +1,4 @@
-import jwt, { SignOptions } from "jsonwebtoken"
+import jwt, { JwtPayload, SignOptions } from "jsonwebtoken"
 import { randomUUID } from "crypto"
 import { IAccessPayloadDTO } from "../types/mapper-types/payload.types"
 import envConfig from "../config/env.config"
@@ -37,4 +37,12 @@ export const generateTokens = (accessPayload:IAccessPayloadDTO) => {
   } catch (error) {
     throw new Error("Token generation failed")
   }
+}
+
+
+export function verifyAccesToken(token: string): JwtPayload {
+  return jwt.verify(token, envConfig.ACCESS_TOKEN_SIGNATURE as string) as JwtPayload;
+}
+export function verifyRefreshToken(token: string): JwtPayload {
+  return jwt.verify(token, envConfig.REFRESH_TOKEN_SIGNATURE as string) as JwtPayload;
 }

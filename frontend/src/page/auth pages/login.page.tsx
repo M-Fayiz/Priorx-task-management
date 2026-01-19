@@ -1,3 +1,8 @@
+import { Spinner } from '@/components/spinner'
+import { loginSchema } from '@/schema/authSchema'
+import AuthService from '@/service/auth.service'
+import { useAuthStore } from '@/store/auth.store'
+import { ApiError } from '@/utils/axiosError.util'
 import {
   ChevronsRightLeft,
   ListChecks,
@@ -7,13 +12,63 @@ import {
   EyeOff
 } from 'lucide-react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  })
+  const [loginError,serLoginError]=useState<Record<string,string>>({})
+   const [loading, setLoading] = useState(false)
 
+   const navigate = useNavigate()
+   const checkAuth = useAuthStore((s) => s.checkAuth)
+
+     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    console.log(1234)
+    const result = loginSchema.safeParse(form)
+    if (!result.success) {
+            const ERROR: { [key: string]: string } = {};
+            const zodError = result.error;
+            zodError.issues.forEach((err) => {
+                if (err.path[0]) {
+                ERROR[err.path[0] as string] = err.message;
+                }
+            });
+            serLoginError(ERROR);
+            return;
+        }
+
+    try {
+      setLoading(true)
+    console.log(1234)
+      serLoginError({})
+      await AuthService.login(form.email, form.password)
+      await checkAuth()
+
+      toast.success("Logged in successfully")
+      navigate("/")
+
+    } catch (error) {
+      if(error instanceof ApiError){
+
+        toast.error(error?.message || "Login failed")
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen flex  from-gray-50 to-gray-100">
       
       {/* LEFT SECTION */}
       <div className="w-full lg:w-1/2 flex items-center justify-center px-6 py-12">
@@ -33,7 +88,7 @@ export default function LoginPage() {
           </div>
 
           {/* FORM */}
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit}>
 
             {/* EMAIL */}
             <div>
@@ -41,13 +96,18 @@ export default function LoginPage() {
                 Email
               </label>
               <input
+                name="email"
                 type="email"
+                value={form.email}
+                onChange={handleChange}
                 placeholder="you@example.com"
                 className="w-full px-4 py-3 rounded-xl border border-gray-300
                 focus:border-black focus:ring-2 focus:ring-black/20
                 outline-none transition-all"
               />
             </div>
+            {loginError.email&&<p className='text-red-500'>{loginError.email}</p>}
+
 
             {/* PASSWORD */}
             <div>
@@ -57,7 +117,10 @@ export default function LoginPage() {
 
               <div className="relative">
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                 name="password"
+                  type={showPassword ? "text" : "password"}
+                  value={form.password}
+                  onChange={handleChange}
                   placeholder="At least 8 characters"
                   className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-300
                   focus:border-black focus:ring-2 focus:ring-black/20
@@ -72,7 +135,10 @@ export default function LoginPage() {
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
+
               </div>
+              {loginError.password&&<p className='text-red-500'>{loginError.password}</p>}
+
             </div>
 
             {/* BUTTON */}
@@ -135,6 +201,7 @@ export default function LoginPage() {
           </div>
         </div>
       </div>
+      {loading&&<Spinner/>}
     </div>
   )
 }

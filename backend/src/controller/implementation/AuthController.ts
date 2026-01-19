@@ -28,4 +28,32 @@ export class AuthController implements IAuthController{
         
         successResponse(res,{accessToken})
     }
+
+     authME=async(req: Request, res: Response, next: NextFunction): Promise<void> =>{
+        const {accessToken}=req.cookies
+        
+        const user= await this._authService.authME(accessToken)
+
+        successResponse(res,{user})
+    }
+    refreshToken=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
+        const {refreshToken}=req.cookies
+
+        const {accessToken}=await this._authService.refreshToken(refreshToken)
+
+        setAccessToken(res,accessToken)
+
+        successResponse(res,{accessToken})
+    }
+    login=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
+        
+        const {email,password}=req.body
+
+        const {accessToken,refreshToken}=await this._authService.login(email,password)
+
+        setAccessToken(res,accessToken)
+        setRefreshToken(res,refreshToken)
+
+        successResponse(res,{accessToken})
+    }
 }

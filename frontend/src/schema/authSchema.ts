@@ -1,4 +1,4 @@
-import { z } from "zod"
+import {  z } from "zod"
 
 
 export const emailSchema = z
@@ -37,3 +37,8 @@ export const signupSchema = z
   })
 
 export type SignupSchemaType = z.infer<typeof signupSchema>
+
+export const loginSchema=z.object({
+  email:emailSchema,
+  password:passwordSchema
+})

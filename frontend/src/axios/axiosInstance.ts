@@ -1,12 +1,13 @@
 import axios, { AxiosError } from "axios";
 import type { AxiosInstance } from "axios";
-import AuthService from "../service/auth.service";
 import { HttpStatusCode } from "../constant/statusCode.const";
-import Router from "../router/appRouter";
+import Router from "@/router/appRouter";
+import AuthService from "@/service/auth.service";
+
 
 const createInstance = (): AxiosInstance => {
   const instance = axios.create({
-    baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1/`,
+    baseURL: `${import.meta.env.VITE_BASE_URL}/api/v1`,
     withCredentials: true,
   });
 
@@ -28,21 +29,17 @@ const createInstance = (): AxiosInstance => {
       ) {
         originalRequest._retry = true;
         try {
-        //   await AuthService.refreshToken();
+          await AuthService.refreshToken();
           return instance(originalRequest);
         } catch {
           window.dispatchEvent(new Event("force-logout"));
         }
       }
-    //   if (status === HttpStatusCode.FORBIDDEN) {
-    //     router.navigate("/unauthorized");
-    //     return;
-    //   }
 
-    //   if (status === HttpStatusCode.LOCKED) {
-    //     router.navigate("/login");
-    //     return;
-    //   }
+      if (status === HttpStatusCode.LOCKED) {
+        Router.navigate("/login");
+        return;
+      }
       return Promise.reject({
         status,
         message: (error.response?.data as any)?.error || "Request failed",
