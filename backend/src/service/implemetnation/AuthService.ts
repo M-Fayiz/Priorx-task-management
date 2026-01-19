@@ -102,8 +102,8 @@ export class AuthService implements IAuthService {
       );
     }
 
-    const user = await this._userRepository.findUser({ _id: decoded._id });
-
+    const user = await this._userRepository.findUser({ _id: decoded.sub });
+  
     if (!user) {
       throw createHttpError(HttpStatus.NOT_FOUND, HttpResponse.USER_NOT_FOUND);
     }
@@ -120,7 +120,7 @@ export class AuthService implements IAuthService {
       throw createHttpError(HttpStatus.LOCKED, HttpResponse.UNAUTHORIZED);
     }
 
-    const user = await this._userRepository.findUser({ _id: decoded._id });
+    const user = await this._userRepository.findUser({ _id: decoded.sub });
 
     if (!user) {
       throw createHttpError(HttpStatus.NOT_FOUND, HttpResponse.USER_NOT_FOUND);

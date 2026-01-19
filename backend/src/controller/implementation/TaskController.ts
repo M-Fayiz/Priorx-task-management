@@ -11,30 +11,33 @@ export class TaskController implements ITaskController {
     res: Response,
     next: NextFunction,
   ): Promise<void> => {
-    const { taskData } = req.body;
+    const { taskData,userId } = req.body;
 
-    const createdTask = await this._taskService.createTask(taskData);
+    const createdTask = await this._taskService.createTask(taskData,userId);
 
-    successResponse(res, createdTask);
+    successResponse(res, {createdTask});
   };
   updateTask=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
-      const {taskId,userId}=req.params
-      const {taskData}=req.body
+
+      const {taskId}=req.params
+      const {taskData,userId}=req.body
 
       const updatedTask =await this._taskService.updateTask(taskId as string,userId as string,taskData)
-      successResponse(res, updatedTask);
+      successResponse(res, {updatedTask});
   }
   deleteTask=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
+
       const {taskId,userId}=req.params
        
       await this._taskService.deleteTask(taskId as string,userId as string)
   }
+  
   getTasks=async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
       
     const {userId}=req.params
-
+  
     const tasks = await this._taskService.getTask(userId as string)
 
-    successResponse(res,tasks)
+    successResponse(res,{tasks})
   }
 }

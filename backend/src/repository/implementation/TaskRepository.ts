@@ -24,7 +24,9 @@ export class TaskRepository
   async deleteTask(taskId: Types.ObjectId): Promise<ITaskModel | null> {
     return await this.delete(taskId);
   }
-  async getTasks(userId:Types.ObjectId):Promise<ITaskModel[]|null>{
-    return await this.find({userId})
-  }
+  async getTasks(userId: Types.ObjectId): Promise<ITaskModel[]> {
+    console.log(userId)
+    return this.find({ userId });
+    }
+
 }

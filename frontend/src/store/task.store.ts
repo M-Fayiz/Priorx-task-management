@@ -1,0 +1,28 @@
+import { create } from "zustand";
+import type { Task } from "@/types/task.types";
+
+interface TaskState {
+  tasks: Task[];
+  setTasks: (tasks: Task[]) => void;
+  addTask: (task: Task) => void;
+  updateTask: (task: Task) => void;
+  deleteTask: (id: string) => void;
+}
+
+export const useTaskStore = create<TaskState>((set) => ({
+  tasks: [],
+  setTasks: (tasks) => set({ tasks }),
+  addTask: (task) =>{
+
+      console.log('datahjk :',task)
+      set((state) => ({ tasks: [task, ...state.tasks] }))
+  },
+  updateTask: (task) =>
+    set((state) => ({
+      tasks: state.tasks.map((t) => (t._id === task._id ? task : t)),
+    })),
+  deleteTask: (id) =>
+    set((state) => ({
+      tasks: state.tasks.filter((t) => t._id !== id),
+    })),
+}));

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { IAuthController } from "../interface/IAuthController";
 import { IAuthService } from "../../service/interface/IAuthService";
 import { successResponse } from "../../util/successResponse.util";
-import { setAccessToken, setRefreshToken } from "../../util/cookies.util";
+import { clearCookies, setAccessToken, setRefreshToken } from "../../util/cookies.util";
 
 export class AuthController implements IAuthController {
   constructor(private _authService: IAuthService) {}
@@ -57,7 +57,7 @@ export class AuthController implements IAuthController {
     next: NextFunction,
   ): Promise<void> => {
     const { refreshToken } = req.cookies;
-
+    console.log('get into ➡️')
     const { accessToken } = await this._authService.refreshToken(refreshToken);
 
     setAccessToken(res, accessToken);
@@ -81,4 +81,10 @@ export class AuthController implements IAuthController {
 
     successResponse(res, { accessToken });
   };
+  logout=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
+
+      clearCookies(res)
+
+      successResponse(res,{logout:true})
+  }
 }

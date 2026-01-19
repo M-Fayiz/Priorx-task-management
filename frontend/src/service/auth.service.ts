@@ -1,3 +1,4 @@
+import { AUTH_TOKEN } from "@/constant/token.const"
 import { axiosInstance } from "../axios/axiosInstance"
 import ConstAPI from "../constant/api.const"
 import type { User } from "../store/auth.store"
@@ -28,6 +29,8 @@ const AuthService ={
                 email,
                 token
             })
+            const {accessToken}=response.data
+            localStorage.setItem(AUTH_TOKEN.ACCESS_TOKEN,accessToken)
             return response.data
         } catch (error) {
             throwAxiosError(error)
@@ -45,8 +48,9 @@ const AuthService ={
     refreshToken:async()=>{
         try {
             const response=await axiosInstance.get(ConstAPI.AUTH.REFRESH_TOKEN)
-
-            return response.data
+             const {accessToken}=response.data
+            localStorage.setItem(AUTH_TOKEN.ACCESS_TOKEN,accessToken)
+           
         } catch (error) {
             throwAxiosError(error)
         }
@@ -58,8 +62,20 @@ const AuthService ={
                 email,
                 password
             })
-            console.log(response.data)
-            return response.data
+            const {accessToken}=response.data
+            localStorage.setItem(AUTH_TOKEN.ACCESS_TOKEN,accessToken)
+           
+        } catch (error) {
+            throwAxiosError(error)
+        }
+    },
+    logOut:async()=>{
+        try {
+            
+           const response= await axiosInstance.delete(ConstAPI.AUTH.LOGOUT)
+         
+            localStorage.removeItem(AUTH_TOKEN.ACCESS_TOKEN)
+           return response.data.logout
         } catch (error) {
             throwAxiosError(error)
         }

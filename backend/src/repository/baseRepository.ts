@@ -13,11 +13,10 @@ export abstract class BaseRepository<T extends Document> {
     return query.exec();
   }
 
-  async find<U = T>(filter: QueryFilter<T>): Promise<U[] | null> {
-    let query = this.model.find(filter);
+  async find<U = T>(filter: QueryFilter<T>): Promise<U[]> {
+  return this.model.find(filter).lean().exec() as Promise<U[]>;
+}
 
-    return query.lean().exec() as Promise<U[]>;
-  }
 
   async findOne(filter: QueryFilter<T>): Promise<T | null> {
     return this.model.findOne(filter);
@@ -26,9 +25,17 @@ export abstract class BaseRepository<T extends Document> {
     return this.model.findByIdAndDelete(id);
   }
   async update(
-    id: Types.ObjectId,
-    updateData: UpdateQuery<T>,
-  ): Promise<T | null> {
-    return this.model.findByIdAndUpdate(id, updateData);
-  }
+  id: Types.ObjectId,
+  updateData: UpdateQuery<T>,
+): Promise<T | null> {
+  return this.model.findByIdAndUpdate(
+    id,
+    updateData,
+    {
+      new: true,        
+      runValidators: true,
+    }
+  );
+}
+
 }

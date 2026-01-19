@@ -8,5 +8,6 @@ authRouter.get("/refresh-token", asyncHandler(authController.refreshToken));
 authRouter.post("/signup", asyncHandler(authController.signup));
 authRouter.post("/verify-email", asyncHandler(authController.verifyEmail));
 authRouter.post("/login", asyncHandler(authController.login));
+authRouter.post("/logout", asyncHandler(authController.login));
 
 export default authRouter;
