@@ -1,16 +1,14 @@
-import jwt, { JwtPayload, SignOptions } from "jsonwebtoken"
-import { randomUUID } from "crypto"
-import { IAccessPayloadDTO } from "../types/mapper-types/payload.types"
-import envConfig from "../config/env.config"
+import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
+import { randomUUID } from "crypto";
+import { IAccessPayloadDTO } from "../types/mapper-types/payload.types";
+import envConfig from "../config/env.config";
 
-export const generateTokens = (accessPayload:IAccessPayloadDTO) => {
+export const generateTokens = (accessPayload: IAccessPayloadDTO) => {
   try {
-    
-
     const refreshPayload = {
       sub: accessPayload.sub,
-      tokenId: randomUUID()
-    }
+      tokenId: randomUUID(),
+    };
 
     const accessToken = jwt.sign(
       accessPayload,
@@ -18,9 +16,9 @@ export const generateTokens = (accessPayload:IAccessPayloadDTO) => {
       {
         expiresIn: "15m",
         algorithm: "HS256",
-        issuer: "task-management-api"
-      }
-    )
+        issuer: "task-management-api",
+      },
+    );
 
     const refreshToken = jwt.sign(
       refreshPayload,
@@ -28,21 +26,25 @@ export const generateTokens = (accessPayload:IAccessPayloadDTO) => {
       {
         expiresIn: "7d",
         algorithm: "HS256",
-        issuer: "task-management-api"
-      }
-    )
+        issuer: "task-management-api",
+      },
+    );
 
-    return { accessToken, refreshToken }
-
+    return { accessToken, refreshToken };
   } catch (error) {
-    throw new Error("Token generation failed")
+    throw new Error("Token generation failed");
   }
-}
-
+};
 
 export function verifyAccesToken(token: string): JwtPayload {
-  return jwt.verify(token, envConfig.ACCESS_TOKEN_SIGNATURE as string) as JwtPayload;
+  return jwt.verify(
+    token,
+    envConfig.ACCESS_TOKEN_SIGNATURE as string,
+  ) as JwtPayload;
 }
 export function verifyRefreshToken(token: string): JwtPayload {
-  return jwt.verify(token, envConfig.REFRESH_TOKEN_SIGNATURE as string) as JwtPayload;
+  return jwt.verify(
+    token,
+    envConfig.REFRESH_TOKEN_SIGNATURE as string,
+  ) as JwtPayload;
 }

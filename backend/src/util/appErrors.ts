@@ -1,5 +1,3 @@
-
-
 export class HttpError extends Error {
   statusCode: number;
   isOperational: boolean;
@@ -14,11 +12,8 @@ export class HttpError extends Error {
   }
 }
 
-
 export const createHttpError = (statusCode: number, message: string) => {
   const errorResponse = new HttpError(statusCode, message);
   console.error("error response from server ", errorResponse);
   return errorResponse;
 };
-
-

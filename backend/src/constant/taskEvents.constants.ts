@@ -3,5 +3,3 @@ export const TASK_EVENTS = {
   UPDATED: "task:updated",
   DELETED: "task:deleted",
 };
-
-

@@ -1,10 +1,7 @@
 import transport from "../config/email.config";
 import envConfig from "../config/env.config";
 
-export const sendToken = async (
-  email: string,
-  token: string,
-) => {
+export const sendToken = async (email: string, token: string) => {
   const verifyUrl = `${envConfig.CLIENT_URL}/auth/verify-email?token=${token}&email=${email}`;
   try {
     const option = {

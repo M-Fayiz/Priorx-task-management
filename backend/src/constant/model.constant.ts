@@ -1,4 +1,4 @@
-export enum ModelName{
-    USER='User',
-    TASK='Task'
+export enum ModelName {
+  USER = "User",
+  TASK = "Task",
 }

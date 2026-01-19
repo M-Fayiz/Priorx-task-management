@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 import envConfig from "../config/env.config";
 
 export const hashPassword = async (pass: string) => {

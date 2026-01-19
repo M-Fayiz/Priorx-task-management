@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { AUTH_TOKEN } from "../constant/authToken.const"; 
+import { AUTH_TOKEN } from "../constant/authToken.const";
 
 export const setAccessToken = (res: Response, token: string) => {
   res.cookie(AUTH_TOKEN.ACCESS_TOKEN, token, {
@@ -28,7 +28,6 @@ export const setRefreshToken = (res: Response, token: string) => {
     path: "/api/v1/auth/refresh-token",
   });
 };
-
 
 export const clearCookies = (res: Response) => {
   const options = {

@@ -1,9 +1,9 @@
-import { Document, Types ,Schema,model} from "mongoose";
+import { Document, Types, Schema, model } from "mongoose";
 import { ITask } from "../types/task.types";
 import { ModelName } from "../constant/model.constant";
 import { TaskStatus } from "../constant/task.constant";
 
-export interface  ITaskModel extends ITask , Document<Types.ObjectId>{}
+export interface ITaskModel extends ITask, Document<Types.ObjectId> {}
 
 const taskSchema = new Schema<ITaskModel>(
   {
@@ -21,7 +21,7 @@ const taskSchema = new Schema<ITaskModel>(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export const TaskModel = model<ITaskModel>(ModelName.TASK, taskSchema);

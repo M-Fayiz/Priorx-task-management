@@ -1,11 +1,18 @@
 import { Types } from "mongoose";
+import { TaskStatus } from "../constant/task.constant";
 
-export interface ITask {
+export interface ITask extends IBaseTaskField {
+  userId: Types.ObjectId;
+}
+export interface ITaskFromClient extends IBaseTaskField {
+  userId: string;
+}
+
+export interface IBaseTaskField {
   title: string;
   description?: string;
-  status: "pending" | "in-progress" | "completed";
+  status: TaskStatus;
   dueDate?: Date;
-  userId: Types.ObjectId;
   createdAt?: Date;
   updatedAt?: Date;
 }

@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 
-export interface IAccessPayloadDTO{
-    sub:Types.ObjectId,
-    email:string
+export interface IAccessPayloadDTO {
+  sub: Types.ObjectId;
+  email: string;
 }

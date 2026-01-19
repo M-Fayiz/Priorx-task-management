@@ -7,7 +7,7 @@ export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   let statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
   let message: string = HttpResponse.SERVER_ERROR;
@@ -19,6 +19,6 @@ export const errorHandler = (
 
   res.status(statusCode).json({
     success: false,
-    message
+    message,
   });
 };

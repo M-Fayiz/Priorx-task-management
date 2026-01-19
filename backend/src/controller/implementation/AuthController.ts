@@ -4,56 +4,81 @@ import { IAuthService } from "../../service/interface/IAuthService";
 import { successResponse } from "../../util/successResponse.util";
 import { setAccessToken, setRefreshToken } from "../../util/cookies.util";
 
+export class AuthController implements IAuthController {
+  constructor(private _authService: IAuthService) {}
 
-export class AuthController implements IAuthController{
+  signup = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { email, password, name } = req.body;
 
-    constructor(private _authService:IAuthService){}
+    const responseEmail: string = await this._authService.createUser(
+      name,
+      email,
+      password,
+    );
 
-    signup=async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
+    successResponse(res, { responseEmail });
+  };
+  verifyEmail = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { token, email } = req.body;
 
-        const {email,password,name}=req.body
+    const { accessToken, refreshToken } = await this._authService.verifyEmail(
+      email,
+      token,
+    );
 
-        const responseEmail:string=await this._authService.createUser(name,email,password)
-        
-        successResponse(res,{responseEmail})
-    }
-    verifyEmail=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
-        
-        const {token,email}=req.body
+    setAccessToken(res, accessToken);
+    setRefreshToken(res, refreshToken);
 
-        const {accessToken,refreshToken}=await this._authService.verifyEmail(email,token)
+    successResponse(res, { accessToken });
+  };
 
-        setAccessToken(res,accessToken)
-        setRefreshToken(res,refreshToken)
-        
-        successResponse(res,{accessToken})
-    }
+  authME = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { accessToken } = req.cookies;
 
-     authME=async(req: Request, res: Response, next: NextFunction): Promise<void> =>{
-        const {accessToken}=req.cookies
-        
-        const user= await this._authService.authME(accessToken)
+    const user = await this._authService.authME(accessToken);
 
-        successResponse(res,{user})
-    }
-    refreshToken=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
-        const {refreshToken}=req.cookies
+    successResponse(res, { user });
+  };
+  refreshToken = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { refreshToken } = req.cookies;
 
-        const {accessToken}=await this._authService.refreshToken(refreshToken)
+    const { accessToken } = await this._authService.refreshToken(refreshToken);
 
-        setAccessToken(res,accessToken)
+    setAccessToken(res, accessToken);
 
-        successResponse(res,{accessToken})
-    }
-    login=async(req: Request, res: Response, next: NextFunction): Promise<void>=> {
-        
-        const {email,password}=req.body
+    successResponse(res, { accessToken });
+  };
+  login = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { email, password } = req.body;
 
-        const {accessToken,refreshToken}=await this._authService.login(email,password)
+    const { accessToken, refreshToken } = await this._authService.login(
+      email,
+      password,
+    );
 
-        setAccessToken(res,accessToken)
-        setRefreshToken(res,refreshToken)
+    setAccessToken(res, accessToken);
+    setRefreshToken(res, refreshToken);
 
-        successResponse(res,{accessToken})
-    }
+    successResponse(res, { accessToken });
+  };
 }
