@@ -26,7 +26,6 @@ export const intitializeSocket = (server: HttpServer) => {
      const token = socket.handshake.auth?.token;
     
 
-    console.log('token :',token)
     if (!token) {
       return next(new Error(HttpResponse.UNAUTHORIZED));
     }

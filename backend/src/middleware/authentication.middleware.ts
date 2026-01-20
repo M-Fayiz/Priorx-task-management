@@ -18,7 +18,7 @@ export async function verifyUser(
    
       throw createHttpError(HttpStatus.UNAUTHORIZED, HttpResponse.UNAUTHORIZED);
     }
-
+    console.log('access token :',accessToken)
     const decode = verifyAccesToken(accessToken);
 
     const userId = decode.sub;
