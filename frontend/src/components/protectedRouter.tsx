@@ -6,7 +6,7 @@ import { AuthStatus } from "@/constant/authStatus.const";
 export const Protected_Router = () => {
   const { user, status } = useAuthStore();
   const location = useLocation();
-
+  console.log('user :',user)
   if (status === AuthStatus.CHECKING) {
     return <Spinner fullScreen />;
   }
