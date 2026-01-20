@@ -4,12 +4,14 @@ import type { IRegistration } from '../../types/auth.type';
 import { signupSchema } from '../../schema/authSchema';
 import AuthService from '@/service/auth.service'; 
 import SimpleVerificationModal from '@/components/successModal';
+import { Spinner } from '@/components/spinner';
 
 
 export default function SignUpPage() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading,setLoading]=useState(false)
   const [email,setEmail]=useState('')
   const [showModal,setShowModal]=useState(false)
   const [formError,setFormErrors]=useState<Record<string,string>>({})
@@ -44,17 +46,20 @@ export default function SignUpPage() {
         }
         
         try {
-         
+          setLoading(true)
           const data = await AuthService.register(registrationForm.name,registrationForm.email,registrationForm.password)
           if(data){
             setEmail(data)
             setShowModal(true)
+            setLoading(false)
           }
         } catch (error) {
        
           console.log(error)
           
-        }
+        }finally {
+  setLoading(false)
+}
     }
 
   return (
@@ -192,11 +197,21 @@ export default function SignUpPage() {
             </div>
 
             <button
-              type="submit"
-              className="w-full py-3 rounded-lg font-medium transition-all mt-6"
-            >
-              Sign Up
-            </button>
+  type="submit"
+  disabled={loading}
+  className={`w-full py-3 rounded-lg font-medium mt-6 
+    flex items-center justify-center gap-2
+    transition-all duration-300 ease-in-out
+    ${loading 
+      ? 'bg-gray-400 cursor-not-allowed' 
+      : 'bg-black hover:bg-gray-800 active:scale-[0.98]'
+    }
+    text-white`}
+>
+  {loading && <Spinner variant="tech" size="small" />}
+  <span>{loading ? 'Signing up...' : 'Sign Up'}</span>
+</button>
+
           </form>
 
           <div className="mt-6 text-center">
