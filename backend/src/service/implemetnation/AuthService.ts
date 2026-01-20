@@ -93,8 +93,15 @@ export class AuthService implements IAuthService {
     return generateTokens(payloadDTO(createdUser._id, createdUser.email));
   }
   async authME(accessToken: string): Promise<IUserDTO> {
+    console.log('get in to auth service')
+     if (!accessToken) {
+      throw createHttpError(
+        HttpStatus.UNAUTHORIZED,
+        HttpResponse.ACCESS_TOKEN_MISSING
+      );
+    }
     const decoded = verifyAccesToken(accessToken);
-    
+
     if (!decoded) {
       throw createHttpError(
         HttpStatus.UNAUTHORIZED,

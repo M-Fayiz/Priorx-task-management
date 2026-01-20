@@ -17,3 +17,4 @@ export const createHttpError = (statusCode: number, message: string) => {
   console.error("error response from server ", errorResponse);
   return errorResponse;
 };
+

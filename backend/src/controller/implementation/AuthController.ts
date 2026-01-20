@@ -46,7 +46,7 @@ export class AuthController implements IAuthController {
     next: NextFunction,
   ): Promise<void> => {
     const { accessToken } = req.cookies;
-    console.log('➡️ ',accessToken)
+    console.log('➡️ access token ',accessToken)
     const user = await this._authService.authME(accessToken);
 
     successResponse(res, { user });
