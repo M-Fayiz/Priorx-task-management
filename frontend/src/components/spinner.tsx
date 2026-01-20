@@ -1,4 +1,3 @@
-import React from "react";
 
 type SpinnerSize = "small" | "medium" | "large" | "xlarge";
 type SpinnerVariant = "theme" | "white" | "tech";

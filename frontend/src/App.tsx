@@ -3,7 +3,7 @@ import Router from "./router/appRouter"
 import { useAuthStore } from "./store/auth.store"
 import { useEffect } from "react"
 import { Spinner } from "./components/spinner"
-
+import { Toaster } from "sonner";
 
 function App() {
 const checkAuth = useAuthStore((s) => s.checkAuth)
@@ -14,7 +14,7 @@ const checkAuth = useAuthStore((s) => s.checkAuth)
   }, [checkAuth])
 
   if (status === "checking") {
-    return <Spinner/>
+    return <Spinner variant="theme"/>
   }
 
 
@@ -22,7 +22,7 @@ const checkAuth = useAuthStore((s) => s.checkAuth)
     <>
 
    <RouterProvider router={Router}/>
-    
+    <Toaster />
     </>
   )
 }

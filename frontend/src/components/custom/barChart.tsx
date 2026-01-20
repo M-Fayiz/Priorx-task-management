@@ -3,7 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 export interface ChartDataItem {
   name: string;
   value: number;
+  [key: string]: string | number;
 }
+
 
 
 export const OverdueBarChart = ({

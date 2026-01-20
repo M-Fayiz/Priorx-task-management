@@ -1,8 +1,7 @@
 "use client"
 
 import { toast } from "sonner"
-
-import { Button } from "./ui/button" 
+import { Button } from "./ui/button"
 
 export function SonnerTypes() {
   return (
@@ -10,12 +9,14 @@ export function SonnerTypes() {
       <Button variant="outline" onClick={() => toast("Event has been created")}>
         Default
       </Button>
+
       <Button
         variant="outline"
         onClick={() => toast.success("Event has been created")}
       >
         Success
       </Button>
+
       <Button
         variant="outline"
         onClick={() =>
@@ -24,6 +25,7 @@ export function SonnerTypes() {
       >
         Info
       </Button>
+
       <Button
         variant="outline"
         onClick={() =>
@@ -32,23 +34,26 @@ export function SonnerTypes() {
       >
         Warning
       </Button>
+
       <Button
         variant="outline"
         onClick={() => toast.error("Event has not been created")}
       >
         Error
       </Button>
+
       <Button
         variant="outline"
         onClick={() => {
           toast.promise<{ name: string }>(
             () =>
-              new Promise((resolve) =>
+              new Promise<{ name: string }>((resolve) =>
                 setTimeout(() => resolve({ name: "Event" }), 2000)
               ),
             {
               loading: "Loading...",
-              success: (data) => `${data.name} has been created`,
+              success: (data: { name: string }) =>
+                `${data.name} has been created`,
               error: "Error",
             }
           )
