@@ -94,7 +94,7 @@ export class AuthService implements IAuthService {
   }
   async authME(accessToken: string): Promise<IUserDTO> {
     const decoded = verifyAccesToken(accessToken);
-
+    
     if (!decoded) {
       throw createHttpError(
         HttpStatus.UNAUTHORIZED,
