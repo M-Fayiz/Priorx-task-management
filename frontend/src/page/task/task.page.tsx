@@ -18,6 +18,7 @@ import type { Task } from "@/types/task.types";
 export const TaskPage = () => {
       const [open, setOpen] = useState(false);
       const {setTasks} = useTaskStore();
+      const [loading,setLoading]=useState<string|null>(null)
         const { tasks, addTask, updateTask, deleteTask } = useTaskStore();
       const {user}=useAuthStore()
       const [selectedTask,setSelectedTask]=useState<Task|null>(null)
@@ -48,12 +49,13 @@ export const TaskPage = () => {
   }, [addTask, updateTask, deleteTask]);
 
   const deleteSelectedTask=async(taskId:string)=>{
-
+    setLoading(taskId)
     await TaskService.deleteTask(taskId,user!._id)
      
   }
 
   const updatedSelectTask=(task:Task)=>{
+    
     setSelectedTask(task)
     setOpen(true)
   }
@@ -77,7 +79,7 @@ export const TaskPage = () => {
       </div>
        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {tasks.length&&tasks.map((task) => (
-            <TaskCard key={task._id} task={task} deleteSelectedTask={deleteSelectedTask} updatedSelectTask={updatedSelectTask}/>
+            <TaskCard key={task._id} task={task} loadingTask={loading} deleteSelectedTask={deleteSelectedTask} updatedSelectTask={updatedSelectTask}/>
         ))}
         {!tasks.length&&(<p className="text-sm text-kosma-gray text-center mt-10">
         No tasks yet. Create your first task 🚀
