@@ -127,9 +127,17 @@ useEffect(() => {
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
+          {task?(
           <Button onClick={submit} disabled={loading}>
-            {loading ? "Creating..." : "Create Task"}
+            {loading ? "Updating..." : "Update Task"}
           </Button>
+
+          ):(
+            <Button onClick={submit} disabled={loading}>
+              {loading ? "Creating..." : "Create Task"}
+            </Button>
+            
+          )}
         </div>
       </DialogContent>
     </Dialog>

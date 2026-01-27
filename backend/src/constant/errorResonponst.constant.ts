@@ -17,5 +17,6 @@ export enum HttpResponse {
   ITEM_EXIST = "Item Already Exist",
   INVALID_ID = `Invalid Id`,
   TAST_NOT_FOUND='Task not found',
-  ACCESS_TOKEN_MISSING='Token is Missing'
+  ACCESS_TOKEN_MISSING='Token is Missing',
+  PLEASE_FILLOUT ='Please fillout all the field ( name, email , password)'
 }

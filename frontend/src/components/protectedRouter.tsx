@@ -8,7 +8,7 @@ export const Protected_Router = () => {
   const location = useLocation();
   console.log('user :',user)
   if (status === AuthStatus.CHECKING) {
-    return <Spinner fullScreen />;
+    return <Spinner variant="theme" size="large" fullScreen />;
   }
 
   if (status === AuthStatus.GUEST) {

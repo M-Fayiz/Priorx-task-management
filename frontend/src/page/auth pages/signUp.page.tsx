@@ -5,6 +5,7 @@ import { signupSchema } from '../../schema/authSchema';
 import AuthService from '@/service/auth.service'; 
 import SimpleVerificationModal from '@/components/successModal';
 import { Spinner } from '@/components/spinner';
+import { Link } from 'react-router-dom';
 
 
 export default function SignUpPage() {
@@ -217,14 +218,14 @@ export default function SignUpPage() {
           <div className="mt-6 text-center">
             <p className="text-sm" style={{ color: '#8C8C8C' }}>
               Already have an account?{' '}
-              <a 
-                href="#" 
+              <Link  
+                to={'/auth/login'}
                 className="font-medium transition-colors"
                 style={{ color: '#0F0F0F' }}
               
               >
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
         </div>

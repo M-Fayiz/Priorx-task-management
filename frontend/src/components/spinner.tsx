@@ -49,7 +49,7 @@ export const Spinner: React.FC<SpinnerProps> = ({
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-gray-500 animate-spin" />
+          <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-gray-800 animate-spin" />
 
           <p className="text-sm text-gray-600 font-medium">
             Loading, please wait...

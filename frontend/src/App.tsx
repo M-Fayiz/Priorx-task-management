@@ -14,7 +14,7 @@ const checkAuth = useAuthStore((s) => s.checkAuth)
   }, [checkAuth])
 
   if (status === "checking") {
-    return <Spinner variant="theme"/>
+    return <Spinner variant="theme" size="large"/>
   }
 
 
