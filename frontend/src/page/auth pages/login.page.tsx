@@ -63,12 +63,12 @@ export default function LoginPage() {
 
         toast.error(error?.message || "Login failed")
       }
-    } finally {
+  } finally {
       setLoading(false)
     }
   }
   if(loading){
-    return<Spinner/>
+    return <Spinner variant="theme" size="large" fullScreen />
   }
   return (
     <div className="min-h-screen flex  from-gray-50 to-gray-100">
